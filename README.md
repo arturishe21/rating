@@ -14,7 +14,6 @@ composer update
   'Vis\Rating\RatingServiceProvider',
 ```
 
-```
 Выполняем миграцию таблиц
 ```json
    php artisan migrate --package=vis/rating
