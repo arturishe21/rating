@@ -1,0 +1,26 @@
+{
+    "name": "vis/rating",
+    "description": "",
+    "authors": [
+        {
+            "name": "artur",
+            "email": "artur@vis-design.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+            "src/controllers",
+            "src/models",
+            "src/facades"
+        ],
+        "psr-0": {
+            "Vis\\Rating\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
