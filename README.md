@@ -29,7 +29,7 @@ composer update
 Подключаем в футере js файл
 ```json
 <script src="{{asset('packages/vis/rating/rating.js')}}"></script>
-```json
+```
 
 Код на странице для голосования
 ```php
