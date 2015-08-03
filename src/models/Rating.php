@@ -6,6 +6,7 @@ use Cartalyst\Sentry\Facades\Laravel\Sentry;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Cache;
 
 class Rating extends Eloquent {
 
@@ -28,7 +29,7 @@ class Rating extends Eloquent {
      */
     public function showVote($page)
     {
-        $thisRating = $this->getRating($page);
+        $thisRating = $this->getRatingAndCache($page);
 
         return View::make('rating::showVote', compact("page", "thisRating"));
     }
@@ -41,7 +42,7 @@ class Rating extends Eloquent {
      */
     public function showResult($page)
     {
-        $thisRating = $this->getRating($page);
+        $thisRating = $this->getRatingAndCache($page);
 
         return View::make('rating::showResult', compact("thisRating"));
     }
@@ -52,11 +53,20 @@ class Rating extends Eloquent {
      *
      * @return integer|float
      */
-    private function getRating($page)
+    private function getRatingAndCache($page)
     {
-        $ratingAvg = self::where("ratingspage_id", $page->id)
-            ->where("ratingspage_type", 'like', get_class($page))
-            ->avg("rating");
+
+        $nameCache = get_class($page).$page->id;
+
+        $ratingAvg = Cache::tags('rating')->rememberForever($nameCache, function() use ($page) {
+
+            $ratingAvg = self::where("ratingspage_id", $page->id)
+                ->where("ratingspage_type", 'like', get_class($page))
+                ->avg("rating");
+
+            return $ratingAvg;
+        });
+
 
         return $ratingAvg;
     }
@@ -100,5 +110,10 @@ class Rating extends Eloquent {
       } else {
           return false;
       }
+    }
+
+    public static function doClearCache()
+    {
+        Cache::tags('rating')->flush();
     }
 }

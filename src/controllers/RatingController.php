@@ -40,6 +40,8 @@ class RatingController extends Controller
 
             Rating::create($data);
 
+            Rating::doClearCache();
+
             return Response::json(
                 array(
                     "status" => "success",
