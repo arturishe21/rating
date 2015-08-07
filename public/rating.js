@@ -35,4 +35,11 @@ var Reyting = {
 
     } //end events
 
-} //end Reyting
+}; //end Reyting
+
+$(function(){
+    Reyting.init();
+    $('.jq-rating').click(function() {
+        Reyting.change( $(this).closest('.reyting') );
+    });
+});
