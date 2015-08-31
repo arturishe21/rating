@@ -63,6 +63,9 @@ class Rating extends Eloquent {
                 ->where("ratingspage_type", str_replace("\\", "_", get_class($page)))
                 ->avg("rating");
 
+            if (!$ratingAvg)
+                $ratingAvg = 0;
+
             return $ratingAvg;
         });
 
