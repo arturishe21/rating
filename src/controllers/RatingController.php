@@ -61,7 +61,9 @@ class RatingController extends Controller
     {
         $data['ip'] = getIp();
         $data['ratingspage_id'] = $data['id'];
-        $data['ratingspage_type'] = Crypt::decrypt($data['model']);
+
+        $data['ratingspage_type'] = str_replace("\\", "_", Crypt::decrypt($data['model']));
+
         $data['rating'] = $data['value'];
         if (Sentry::check()) {
             $data['user_id'] = Sentry::getUser()->id;;
@@ -69,5 +71,5 @@ class RatingController extends Controller
 
         return $data;
     }
-    
+
 }

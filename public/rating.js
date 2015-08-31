@@ -19,9 +19,9 @@ var Reyting = {
         $.post("/rating/add_vote",{data : data},function(response){
 
             if ( response.status == "error" ) {
-                _this.find('.message').html(response.error_messages);
+                _this.find('.message').html("<span class='rating_error'>" + response.error_messages + "</span>");
             } else {
-                _this.find('.message').html(response.ok_messages);
+                _this.find('.message').html("<span class='rating_success'>" + response.ok_messages + "</span>");
             }
         },"json");
 

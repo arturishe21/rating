@@ -55,13 +55,12 @@ class Rating extends Eloquent {
      */
     private function getRatingAndCache($page)
     {
-
-        $nameCache = get_class($page).$page->id;
+        $nameCache = str_replace("\\", "_", get_class($page)).$page->id;
 
         $ratingAvg = Cache::tags('rating')->rememberForever($nameCache, function() use ($page) {
 
             $ratingAvg = self::where("ratingspage_id", $page->id)
-                ->where("ratingspage_type", 'like', get_class($page))
+                ->where("ratingspage_type", str_replace("\\", "_", get_class($page)))
                 ->avg("rating");
 
             return $ratingAvg;
@@ -101,15 +100,15 @@ class Rating extends Eloquent {
      */
     public static function isCheckIp(array $data)
     {
-      $presentIp = self::where("ratingspage_id", $data['ratingspage_id'])
-            ->where("ratingspage_type", 'like', $data['ratingspage_type'])
+        $presentIp = self::where("ratingspage_id", $data['ratingspage_id'])
+            ->where("ratingspage_type", $data['ratingspage_type'])
             ->where("ip", 'like',  $data['ip'])->count();
 
-      if ($presentIp) {
-          return true;
-      } else {
-          return false;
-      }
+        if ($presentIp) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function doClearCache()
